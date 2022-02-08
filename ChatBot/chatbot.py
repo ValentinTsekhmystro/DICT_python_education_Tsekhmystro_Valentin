@@ -1,0 +1,1 @@
+print("Hello! My name is DICT_Bot.\nI was created in 2021.")
