@@ -4,8 +4,21 @@ import random
 print("HANGMAN")
 my_list = ("python", "java", "javascript", "php")
 my_word = random.choice(my_list)
-a = input("Guess the word " + my_word[:3] + "_".join(['' for _ in range(len(my_word)-3)]) + ":")
-if a == my_word:
-    print("You survived!")
-else:
-    print("You lost!")
+remember_letters =[]
+all_letters = list(set(my_word))
+word = "".join([i if i in remember_letters else "_" for i in my_word])
+print(word)
+life = 8
+while life > 0:
+    letter = input("Input a letter:")
+    if letter in my_word and letter not in remember_letters:
+        remember_letters.append(letter)
+        all_letters.remove(letter)
+    else:
+        life -= 1
+    word = "".join([i if i in remember_letters else "_" for i in my_word])
+    print(word)
+    if len(all_letters) == 0:
+        break
+
+print("Thanks for playing!\nWe'll see how well you did in the next stage")
