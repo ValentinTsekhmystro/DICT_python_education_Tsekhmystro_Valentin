@@ -1,3 +1,9 @@
-print("X 0 X")
-print("0 X 0")
-print("X X 0")
+line = input("Enter cells: ")
+print("---------")
+for n,i in enumerate(line):
+    if n % 3 == 0:
+        print('| ', end="")
+    print(i, end= ' ')
+    if n % 3 == 2:
+        print('|')
+print("---------")
