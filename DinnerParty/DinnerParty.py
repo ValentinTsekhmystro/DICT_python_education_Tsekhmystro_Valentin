@@ -1,3 +1,6 @@
+import random
+
+yes_no_dict = {'yes': True, 'no': False}
 number_of_friends = int(input('Enter the number of friends joining (including you):\n'))
 
 if number_of_friends < 1:
@@ -9,8 +12,14 @@ for _ in range(number_of_friends):
     name = input()
     payments[name] = 0
 
-total_amount = int(input("Enter the total amount:\n"))
-a = round(total_amount / number_of_friends, 2)
-for name in payments:
-    payments[name] = a
-print(payments)
+print('Enter the total bill value:')
+bill = float(input())
+
+print('Do you want to use the "Who is lucky?" feature? Write Yes/No:')
+somebody_is_lucky = yes_no_dict[input().lower()]
+lucky_name = ''
+if somebody_is_lucky:
+    lucky_name = random.choice(list(payments.keys()))
+    print(lucky_name, 'is the lucky one!')
+else:
+    print('No one is going to be lucky')
