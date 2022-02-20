@@ -23,3 +23,13 @@ if somebody_is_lucky:
     print(lucky_name, 'is the lucky one!')
 else:
     print('No one is going to be lucky')
+
+bill_for_each = round(bill / (number_of_friends - int(somebody_is_lucky)), 2)
+
+for p in payments.keys():
+    payments[p] = bill_for_each
+
+if somebody_is_lucky:
+    payments[lucky_name] = 0
+
+print(payments)
