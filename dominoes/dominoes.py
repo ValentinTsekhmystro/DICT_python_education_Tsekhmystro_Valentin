@@ -1,6 +1,5 @@
 from random import choice, shuffle
 
-
 domino_set = []
 double = [[x, y] for x in range(7) for y in range(7) if x == y]
 
@@ -44,8 +43,19 @@ else:
     status = "computer"
     domino_snake = domino_player[-1]
     player.remove(domino_snake)
-print("Stock pieces:", stock)
-print("Computer pieces:", computer)
-print("player pieces:", player)
-print("Domino snake:", [domino_snake])
-print("Status:", status)
+print("======================================================================")
+print("Stock size:", len(stock))
+print("Computer pieces:", len(computer))
+print()
+print(domino_snake)
+print()
+print("Your pieces:")
+count = 1
+for x in player:
+    print(f"{count}:{x}")
+    count += 1
+print()
+if status == "player":
+    print("Status: It's your turn to make a move. Enter your command.")
+else:
+    print("Status: Computer is about to make a move. Press Enter to continue...")
