@@ -1,13 +1,24 @@
 import random
 from random import choice, shuffle
 
-
 domino_set = []
 double = [[x, y] for x in range(7) for y in range(7) if x == y]
 for x in range(7):
     for y in range(x, 7):
         domino_set.append([x, y])
 shuffle(domino_set)
+
+def domino_score(a, b):
+    dict_a = {}
+    new_list = []
+    for x in a:
+        dict_a[tuple(x)] = str(ai_counter(a, b, x[0]) + ai_counter(a, b, x[1]))
+    for key, value in dict_a.items():
+        new_list.append([int(value), key])
+    new_list.sort(reverse=-1)
+    return new_list
+
+
 def distribute(domino):
     computer_d = []
     player_d = []
@@ -41,6 +52,17 @@ def game_draw(k):
                 exit()
     else:
         pass
+
+
+def ai_counter(a, b, r):
+    k = a + b
+    open_list = []
+    for x in k:
+        for y in x:
+            open_list.append(y)
+    return open_list.count(r)
+
+
 stock, domino_set, computer, player = distribute(domino_set)
 domino_computer = []
 domino_player = []
@@ -145,49 +167,41 @@ while True:
     else:
         print("Status: Computer is about to make a move. Press Enter to continue...")
         dummy = input()
-        computer_input = random.randint(-len(computer), len(computer))
+        counter = 0
+        k = domino_score(computer, domino_snake)
+        computer_input = list(k[counter][1])
         while True:
-            if computer_input > len(computer):
-                print("Invalid input. Please try again.")
-                computer_input = random.randint(-len(computer), len(computer))
-                continue
-            else:
-                if computer_input != 0:
-                    if computer_input > 0:
-                        if domino_snake[-1][1] in computer[computer_input - 1]:
-                            if computer[computer_input - 1].index(domino_snake[-1][1]) == 0:
-                                domino_snake.append(computer[computer_input - 1])
-                            else:
-                                k = computer[abs(computer_input) - 1][0]
-                                m = computer[abs(computer_input) - 1][1]
-                                domino_snake.append([m, k])
-                            del computer[computer_input - 1]
-                            status = "player"
-                            break
-                        else:
-                            computer_input = random.randint(-len(computer), len(computer))
-                            continue
-                    else:
-                        if domino_snake[0][0] in computer[abs(computer_input) - 1]:
-                            if computer[abs(computer_input) - 1].index(domino_snake[0][0]) == 1:
-                                domino_snake = [computer[abs(computer_input) - 1]] + domino_snake
-                            else:
-                                k = computer[abs(computer_input) - 1][0]
-                                m = computer[abs(computer_input) - 1][1]
-                                domino_snake = [[m, k]] + domino_snake
-                            del computer[abs(computer_input) - 1]
-                            status = "player"
-                            break
-                        else:
-                            computer_input = random.randint(-len(computer), len(computer))
-                            continue
+            if domino_snake[-1][1] in computer_input:
+                if computer_input.index(domino_snake[-1][1]) == 0:
+                    domino_snake.append(computer_input)
                 else:
+                    k = computer_input[0]
+                    m = computer_input[1]
+                    domino_snake.append([m, k])
+                computer.remove(computer_input)
+                status = "player"
+                break
+            elif domino_snake[0][0] in computer_input:
+                if computer_input.index(domino_snake[0][0]) == 1:
+                    domino_snake = [computer_input]+ domino_snake
+                else:
+                    k = computer_input[0]
+                    m = computer_input[1]
+                    domino_snake = [[m, k]] + domino_snake
+                computer.remove(computer_input)
+                counter = 0
+                status = "player"
+                break
+            else:
+                counter += 1
+                if counter >= len(k):
                     if len(stock) > 0:
                         computer.append(stock[-1])
                         del stock[-1]
                         status = "player"
                         break
                     else:
-                        print("Illegal move. Please try again.")
-                        computer_input = random.randint(-len(computer), len(computer))
-                        continue
+                        break
+                else:
+                    computer_input = list(k[counter][1])
+                    continue
